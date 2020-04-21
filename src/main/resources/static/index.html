@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calc</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <form method="get" action="/cal1">
+        <input name="num1">
+        <select name="oper">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input name="num2">
+        <button type="submit">연산</button>
+    </form>
+    <input id="n1">
+    <select id="operand">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+    <input id="n2">
+    <button onclick="send()">연산</button>
+    <script>
+        function send() {
+            var n1 = $("#n1").val();
+            var n2 = $("#n2").val();
+            var oper = $("#operand").val();
+            if(oper = "/") { oper = "나누기" }
+            location.href = "/cal2/" + n1 + "/" + oper + "/" + n2;
+        }
+    </script>
+</body>
+</html>
