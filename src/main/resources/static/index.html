@@ -31,8 +31,10 @@
             var n1 = $("#n1").val();
             var n2 = $("#n2").val();
             var oper = $("#operand").val();
-            if(oper = "/") { oper = "나누기" }
-            location.href = "/cal2/" + n1 + "/" + oper + "/" + n2;
+            if(oper == "/") { oper = "나누기" }
+            console.log(n1);
+            if(n1 == "" || n2 == "") { alert("첫번째값 혹은 두번째값이 입력되지않았습니다.") }
+            else { location.href = "/cal2/" + n1 + "/" + oper + "/" + n2; }
         }
     </script>
 </body>
