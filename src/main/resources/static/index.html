@@ -2,40 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Calc</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <title>Title</title>
 </head>
 <body>
-    <form method="get" action="/cal1">
-        <input name="num1">
-        <select name="oper">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-        </select>
-        <input name="num2">
-        <button type="submit">연산</button>
-    </form>
-    <input id="n1">
-    <select id="operand">
-        <option value="+">+</option>
-        <option value="-">-</option>
-        <option value="*">*</option>
-        <option value="/">/</option>
-    </select>
-    <input id="n2">
-    <button onclick="send()">연산</button>
-    <script>
-        function send() {
-            var n1 = $("#n1").val();
-            var n2 = $("#n2").val();
-            var oper = $("#operand").val();
-            if(oper == "/") { oper = "나누기" }
-            console.log(n1);
-            if(n1 == "" || n2 == "") { alert("첫번째값 혹은 두번째값이 입력되지않았습니다.") }
-            else { location.href = "/cal2/" + n1 + "/" + oper + "/" + n2; }
-        }
-    </script>
+<div>
+    <h1>회원가입</h1>
+    username <input />
+    <br />
+    email <input />
+    <br />
+    password <input />
+    <br />
+    <button>확인</button>
+    <button>취소</button>
+</div>
+<div>
+    <h1>댓글</h1>
+    content <input />
+    <button>확인</button>
+</div>
+<div>
+    <h1>회원 목록</h1>
+    aaa aaa@dgsw 1234 person.png
+    <input type="file"/>
+    <button>파일 업로드</button>
+    <button>삭제</button>
+    <button>이미지</button>
+</div>
+<div>
+    <h1>댓글 목록</h1>
+    aaa hi there1 <button>수정</button> <button>삭제</button>
+    <br/>
+    aaa hi there2 <button>수정</button> <button>삭제</button>
+    <br/>
+    aaa hi there3 <button>수정</button> <button>삭제</button>
+    <br />
+    <button>로그인</button>
+</div>
 </body>
 </html>

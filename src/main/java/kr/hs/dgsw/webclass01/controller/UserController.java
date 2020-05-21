@@ -14,46 +14,33 @@ public class UserController {
     // UserService 객체 생성
     private UserService userService;
 
-    // HTTP Request 매핑
-    @GetMapping("/user")
-    // Http Response Body 사용
-    @ResponseBody
-    // 유저리스트 반환하는 함수
-    public List<User> list() { return userService.list(); }
-
-    // HTTP Request 매핑
-    @GetMapping("/user/{id}")
-    // Http Response Body 사용
-    @ResponseBody
-    // 유저 아이디를 받아서 해당 유저를 리턴
-    public User view(@PathVariable String id) {
-        return userService.view(id);
-    }
-
-    // HTTP Request 매핑
-    @PostMapping("/user")
-    // Http Response Body 사용
-    @ResponseBody
-    // 유저 추가
-    public boolean add(@RequestBody User user) {
+    @PostMapping("/user/add")
+    public User add(@RequestBody User user) {
         return userService.add(user);
     }
 
-    // HTTP Request 매핑
-    @PutMapping("/user")
-    // Http Response Body 사용
-    @ResponseBody
-    // 유저 데이터 업데이트
-    public User update(@RequestBody User user) {
-        return userService.update(user);
+    @PostMapping("/user/login")
+    public User login(@RequestBody User user) {
+        return userService.login(user.getEmail(), user.getPassword());
     }
 
-    // HTTP Request 매핑
-    @DeleteMapping("/user/{id}")
-    // Http Response Body 사용
-    @ResponseBody
-    // 유저 삭제
-    public boolean delete(@PathVariable String id) {
+    @PutMapping("/user/update/{id}")
+    public User update(@PathVariable Long id, @RequestBody User user) {
+        return userService.update(id, user);
+    }
+
+    @DeleteMapping("/user/delete/{id}")
+    public boolean delete(@PathVariable Long id) {
         return userService.delete(id);
+    }
+
+    @GetMapping("/user/view/{id}")
+    public User view(@PathVariable Long id) {
+        return userService.view(id);
+    }
+
+    @GetMapping("/user/list")
+    public List<User> list() {
+        return userService.list();
     }
 }

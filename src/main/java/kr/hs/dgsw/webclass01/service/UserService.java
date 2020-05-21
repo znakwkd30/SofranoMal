@@ -5,9 +5,10 @@ import kr.hs.dgsw.webclass01.entity.User;
 import java.util.List;
 
 public interface UserService {
+    User add(User user);
+    User login(String email, String password);
+    User update(Long id, User user);
+    boolean delete(Long id);
+    User view(Long id);
     List<User> list();
-    User view(String id);
-    boolean add(User user);
-    User update(User user);
-    boolean delete(String id);
 }
