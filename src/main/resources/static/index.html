@@ -3,41 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
+<script>
+    function uploadFile() {
+        console.log("uploadFile");
+        fileData = $("input[name=uploadfile]")[0].files[0];
+        console.log(fileData);
+        var formData = new FormData();
+        formData.append("srcFile", fileData);
+
+        $.ajax({
+            url: "attachment",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                alert("성공");
+            }
+        })
+    }
+
+    function getUserImage() {
+        $.ajax({
+            url: "attachment/user/1",
+            contentType: "image/png",
+            success: function (res) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    console.log(reader.result);
+                }
+                console.log(reader.readAsText(res, "UTF-8"));
+                var imageDiv = $(".imageShowDiv");
+                imageDiv.append(res);
+            }
+        })
+    }
+
+    function visibleloginBtn() {
+        $(".loginDiv").css("visibility", "visible")
+    }
+
+    function userUpdate() {
+        var id = sessionStorage.getItem("id");
+        $.ajax({
+            url: `user/update/${id}`,
+            contentType: "application/json",
+            data: JSON.stringify({}),
+            success: function (res) {
+                alert("유저 업데이트 성공")
+            }
+        })
+    }
+
+    function deleteUser() {
+        var id = sessionStorage.getItem("userId");
+        if (id === undefined || id === null) { alert("로그인 하지 않았습니다.") }
+        $.ajax({
+            url: `user/delete/` + parseInt(id),
+            type: "delete",
+            contentType: "application/json",
+            success: function (res) {
+                alert("유저 삭제 성공");
+            }
+        })
+    }
+
+    function addComment() {
+        content = $("input[name=commentContent]").val();
+        var id = sessionStorage.getItem("userId");
+        if (id === undefined || id === null) { alert("로그인 하지 않았습니다.") }
+        else if(content === "") { alert("내용을 입력하지않았습니다.") }
+        else {
+            $.post({
+                url: "/comment/add",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    userId: id,
+                    content: content
+                }),
+                success: function (res) {
+                    alert("댓글을 달았습니다.")
+                }
+            })
+        }
+    }
+    
+    function updateComment() {
+        content = $("input[name=commentContent]").val();
+        var id = sessionStorage.getItem("userId");
+        if (id === undefined || id === null) { alert("로그인 하지 않았습니다.") }
+        else {
+            $.ajax({
+                url: `comment/update/${1}`,
+                contentType: "application/json",
+                type: "put",
+                data: JSON.stringify({
+                    userId: id,
+                    content: content
+                }),
+                success: function (res) {
+                    alert("댓글을 업데이트 했습니다.")
+                }
+            })
+        }
+    }
+    
+    function deleteComment() {
+        var id = sessionStorage.getItem("userId");
+        if (id === undefined || id === null) { alert("로그인 하지 않았습니다.") }
+        else {
+            $.ajax({
+                url: `comment/delete/${1}`,
+                contentType: "application/json",
+                type: "delete",
+                success: function () {
+                    alert("댓글 삭제 완료");
+                }
+            })
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url:"/comment/list",
+            success: function (res) {
+                var commentDiv = $(".comment");
+                res.forEach(data => {
+                  var div = `<div>
+                        <span>${data.userId}</span>
+                        <span>${data.content}</span>
+                        <button class="commentUpdateBtn" onclick="updateComment()">수정</button>
+                        <button class="commentRemoveBtn" onclick="deleteComment()">삭제</button>
+                    </div>`
+
+                    commentDiv.append(div);
+                })
+            }
+        })
+
+        $.ajax({
+            url:"/user/list",
+            success: function (res) {
+                var userDiv = $(".user");
+                res.forEach(data => {
+                    var div = `<div>
+                        <span>${data.username}</span>
+                        <span>${data.email}</span>
+                        <span>${data.password}</span>
+                        <input type="file" name="uploadfile"/>
+                        <button class="uploadBtn" onclick="uploadFile()">파일 업로드</button>
+                        <button class="userRemoveBtn" onclick="deleteUser()">삭제</button>
+                        <button class="userUpdateBtn" onclick="userUpdate()">수정</button>
+                        <button class="userImageBtn" onclick="getUserImage()">이미지</button>
+                        <div class="imageShowDiv"></div>
+                    </div>`
+
+                    userDiv.append(div);
+                })
+            }
+        })
+
+        email = $("input[name=id]");
+        password = $("input[name=pw]");
+        $(".loginBtn").click(function () {
+            if($(email).val() === "") { alert("아이디를 입력해주세요") }
+            else if($(password).val() === "") { alert("비밀번호를 입력해주세요") }
+            else {
+                $.post({
+                    url: "/user/login",
+                    contentType: 'application/json',
+                    data: JSON.stringify({ "email": $(email).val(), "password": $(password).val() }),
+                    success: function (res) {
+                        console.log(res);
+                        alert("로그인에 성공했습니다.");
+                        sessionStorage.setItem("email", email);
+                        sessionStorage.setItem("userId", res.id);
+                        sessionStorage.setItem("User", res);
+                    }
+                })
+            }
+        })
+
+        userName = $("input[name=username]");
+        userEmail = $("input[name=email]");
+        userPw = $("input[name=password]");
+        $(".registerBtn").click(function () {
+            if($(userName).val() === "") { alert("이름이 없습니다.") }
+            else if($(userEmail).val() === "") { alert("이메일 없습니다.") }
+            else if($(userPw).val() === "") { alert("비밀번호가 없습니다.") }
+            else {
+                $.post({
+                    url: "/user/add",
+                    data: JSON.stringify({
+                        "username": `${$(userName).val()}`,
+                        "email": `${$(userEmail).val()}`,
+                        "password": `${$(userPw).val()}`
+                    }),
+                    contentType: "application/json",
+                    success: function (res) {
+                        alert("회원가입에 성공했습니다.")
+                    }
+                })
+            }
+        })
+    })
+</script>
 <body>
 <div>
     <h1>회원가입</h1>
-    username <input />
+    username <input name="username"/>
     <br />
-    email <input />
+    email <input name="email"/>
     <br />
-    password <input />
+    password <input name="password"/>
     <br />
-    <button>확인</button>
-    <button>취소</button>
+    <button class="registerBtn">확인</button>
+    <button class="cancelBtn">취소</button>
 </div>
 <div>
     <h1>댓글</h1>
-    content <input />
-    <button>확인</button>
+    content <input name="commentContent"/>
+    <button class="commentBtn" onclick="addComment()">확인</button>
 </div>
 <div>
     <h1>회원 목록</h1>
-    aaa aaa@dgsw 1234 person.png
-    <input type="file"/>
-    <button>파일 업로드</button>
-    <button>삭제</button>
-    <button>이미지</button>
+    <div class="user"></div>
 </div>
 <div>
     <h1>댓글 목록</h1>
-    aaa hi there1 <button>수정</button> <button>삭제</button>
-    <br/>
-    aaa hi there2 <button>수정</button> <button>삭제</button>
-    <br/>
-    aaa hi there3 <button>수정</button> <button>삭제</button>
-    <br />
-    <button>로그인</button>
+    <div class="comment"></div>
+    <button onclick="visibleloginBtn()">로그인</button>
+    <div style="visibility: hidden" class="loginDiv">
+        <input name="id" />
+        <input name="pw" />
+        <button class="loginBtn">로그인</button>
+    </div>
 </div>
 </body>
 </html>

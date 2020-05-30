@@ -22,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
 
     @PostConstruct
     private void init() {
-        User u = userRepository.save(new User("aaa", "aaa@dgsw", "1234", "C:\\", ""));
+        User u = userRepository.save(new User("aaa", "aaa@dgsw", "1234", "C:\\test\\2020\\05\\27\\39a76a53-52b6-40fa-9269-a5dc3c4739c9_4528a5d6727e3c15.png", "39a76a53-52b6-40fa-9269-a5dc3c4739c9_4528a5d6727e3c15.png"));
         commentRepository.save(new Comment(u.getId(), "hi there", "C:", ""));
     }
 

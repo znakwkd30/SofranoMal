@@ -1,3 +1,4 @@
+//했음
 GET http://localhost:8080/comment/list
 Accept: application/json
 
@@ -11,6 +12,7 @@ Content-Type: application/json
 }
 
 ###
+//했음
 GET http://localhost:8080/user/list
 Accept: application/json
 
@@ -56,5 +58,9 @@ Content-Type: application/json
   "content": "hello~"
 }
 
+####
+#POST http://localhost:8080/user/login
+
+GET http://localhost:8080/attachment/user/1
+
 ###
-POST http://localhost:8080/user/login
