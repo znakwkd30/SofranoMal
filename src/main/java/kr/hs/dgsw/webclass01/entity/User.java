@@ -1,39 +1,65 @@
 package kr.hs.dgsw.webclass01.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.slf4j.LoggerFactory;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
-@Entity
-@Getter // getter 생성
-@Setter // setter 생성
-@NoArgsConstructor // default 생성자 생성
-@AllArgsConstructor // 모든 인자를 가지는 생성자 생성
-@ToString // ToString 메소드 생성
+@Entity // jpa 엔티티
+@Data // getter, setter set
+@NoArgsConstructor // 생성자
 public class User {
-    @Id
-    @GeneratedValue
-    private Long id; // 문자열값 id
-    private String username; // 문자열값 name
-    private String email; // 문자열값 email
+    @Id // pk
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ai
+    private long id;
+    @Column(nullable = false, unique = true, length = 20) // table column null값 불가, 유니크값, 길이 20
+    private String account;
+    @Column(nullable = false) // table column null값 불가
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // 쓰려는 경우에만 접근 허용
     private String password;
-    @CreationTimestamp
-    private LocalDateTime joined;
-    @UpdateTimestamp
-    private LocalDateTime modified;
-    private String storedPath;
-    private String originalName;
 
-    public User(String username, String email, String password, String storedPath, String originalName) {
-        this.username = username;
+    // 비밀번호 암호화
+    public void setPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(password.getBytes(), 0, password.getBytes().length);
+            this.password = new BigInteger(1, md.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            Logger logger = (Logger) LoggerFactory.getLogger(User.class);
+            logger.warning(e.getMessage());
+        }
+    }
+
+    @Column(nullable = false) // table column null값 불가
+    private String name;
+    @Column(unique = true) // table column 유니크값
+    private String email;
+    @Column(unique = true) // table column 유니크값
+    private String phone;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // 쓰려는 경우에만 접근 허용
+    private String profilePath;
+    @CreationTimestamp // 생성과 동시에 시간 저장
+    @Column(updatable = false, nullable = false) // table column null값 불가 수정 불가
+    private LocalDateTime created;
+    @UpdateTimestamp // 업데이트시 시간 저장
+    @Column(nullable = false) // table column null값 불가
+    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss") // 포맷방식
+    private LocalDateTime modified;
+
+    public User(String account, String password, String name, String email, String phone, String profilePath) {
+        this.account = account;
+        setPassword(password);
+        this.name = name;
         this.email = email;
-        this.password = password;
-        this.storedPath = storedPath;
-        this.originalName = originalName;
+        this.profilePath = profilePath;
     }
 }
