@@ -202,6 +202,10 @@
             success: () => {
                 alert("게시글 작성");
                 window.location.href = "/";
+            },
+            error: (request, status, err) => {
+                console.log(err);
+                alert("작성중 에러");
             }
         })
     };
