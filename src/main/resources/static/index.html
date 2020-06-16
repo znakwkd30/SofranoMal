@@ -17,6 +17,7 @@
                     var div = `
                         <div id="user${item.id}">
                             <span onclick="readUserPost(${item.id})">${item.name}</span>
+                            <span>${item.account}</span>
                             <span>${item.email}</span>
                             <span>${item.phone}</span>
                             <button onclick="visibleUpdateUserDiv(${item.id})">수정</button>
@@ -166,16 +167,16 @@
     };
 
     const updateUser = (id) => {
-        account = $("input[name=uaccount]").val();
-        uname = $("input[name=uuname]").val();
-        email = $("input[name=uemail]").val();
-        phone = $("input[name=uphone]").val();
-        password = $("input[name=upassword]").val();
+        uaccount = $("input[name=uaccount]").val();
+        uuname = $("input[name=uuname]").val();
+        uemail = $("input[name=uemail]").val();
+        uphone = $("input[name=uphone]").val();
+        upassword = $("input[name=upassword]").val();
         $.ajax({
             url: `user/update/${id}`,
             type: "put",
             contentType: "application/json",
-            data: JSON.stringify({ "account": account, "name": uname, "password": password, "phone": phone, "email": email }),
+            data: JSON.stringify({ "account": uaccount, "name": uuname, "password": upassword, "phone": uphone, "email": uemail }),
             success: res => {
                 alert("유저업데이트 성공!");
                 window.location.href = "/";
