@@ -1,10 +1,9 @@
-package com.example.webshop.Service;
+package kr.hs.dgsw.webclass01.Service;
 
 import java.util.List;
 
-import com.example.webshop.Domain.SubMenu;
-import com.example.webshop.Domain.SubMenuMapper;
-
+import kr.hs.dgsw.webclass01.Domain.SubMenu;
+import kr.hs.dgsw.webclass01.Domain.SubMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

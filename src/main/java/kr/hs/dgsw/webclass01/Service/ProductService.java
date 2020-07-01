@@ -1,8 +1,8 @@
-package com.example.webshop.Service;
+package kr.hs.dgsw.webclass01.Service;
+
+import kr.hs.dgsw.webclass01.Domain.Product;
 
 import java.util.List;
-
-import com.example.webshop.Domain.Product;
 
 public interface ProductService {
     List<Product> findAll();

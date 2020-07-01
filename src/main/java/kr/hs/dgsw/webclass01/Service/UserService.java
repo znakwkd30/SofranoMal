@@ -1,7 +1,8 @@
-package com.example.webshop.Service;
+package kr.hs.dgsw.webclass01.Service;
+
+import kr.hs.dgsw.webclass01.Domain.User;
 
 import java.util.List;
-import com.example.webshop.Domain.User;
 
 public interface UserService {
     List<User> findAll();

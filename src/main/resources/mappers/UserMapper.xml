@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.hs.dgsw.webclass01.Domain.UserMapper">
+
+    <select id="findAll" resultType="kr.hs.dgsw.webclass01.Domain.User">
+        select id, account, password, username, tel, phone, zipcode, address, email, created, modifide
+        from user
+    </select>
+
     <insert id="add" parameterType="kr.hs.dgsw.webclass01.Domain.User">
         insert into user(account, password, username, tel, phone, zipcode, address, email)
-        values(#{account}, #{password}, #{username}, #{tel}, #{phone}, #{zipcode}, #{address}, #{email})
+        values(#{account}, #{password}, #{userName}, #{tel}, #{phone}, #{zipCode}, #{address}, #{email})
     </insert>
 
     <update id="modify" parameterType="kr.hs.dgsw.webclass01.Domain.User">
         update user
-        set password=#{password}, username=#{username}, tel=#{tel}, phone=#{phone}, zipcode={#zipcode}, address=#{address}, email=#{email}
+        set password=#{password}, username=#{userName}, tel=#{tel}, phone=#{phone}, zipcode=#{zipCode}, address=#{address}, email=#{email}
         where id=#{id}
     </update>
 
@@ -18,18 +23,19 @@
         where id=#{id}
     </delete>
 
-    <select id="findall" resultType="kr.hs.dgsw.webclass01.Domain.User">
-        select id, account, username, password, tel, phone, zipcode, address, email
-        from user
-    </select>
-
     <select id="findById" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.User">
         select id, account, username, password, tel, phone, zipcode, address, email
         from user
         where id=#{id}
     </select>
 
-    <select id="login" parameterType="kr.hs.dgsw.webclass01.Domain.User" resultType="kr.hs.dgsw.webclass01.Domain.User">
+    <select id="findByAccount" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.User">
+        select id, account, username, password, tel, phone, zipcode, address, email
+        from user
+        where account=#{account}
+    </select>
+
+    <select id="login" parameterType="com.example.webshop.User" resultType="kr.hs.dgsw.webclass01.Domain.User">
         select id, account, username, password, tel, phone, zipcode, address, email
         from user
         where account=#{account} and password=#{password}

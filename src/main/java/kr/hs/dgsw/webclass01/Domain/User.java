@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class User {
     private Long id;
-    private String accout;
+    private String account;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private String username;
+    private String userName;
     private String tel;
     private String phone;
-    private String zipcode;
+    private String zipCode;
     private String address;
     private String email;
     private LocalDateTime created;

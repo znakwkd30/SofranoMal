@@ -1,10 +1,9 @@
-package com.example.webshop.Service;
+package kr.hs.dgsw.webclass01.Service;
 
 import java.util.List;
 
-import com.example.webshop.Domain.User;
-import com.example.webshop.Domain.UserMapper;
-
+import kr.hs.dgsw.webclass01.Domain.User;
+import kr.hs.dgsw.webclass01.Domain.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

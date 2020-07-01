@@ -1,10 +1,9 @@
-package com.example.webshop.Service;
+package kr.hs.dgsw.webclass01.Service;
 
 import java.util.List;
 
-import com.example.webshop.Domain.Product;
-import com.example.webshop.Domain.ProductMapper;
-
+import kr.hs.dgsw.webclass01.Domain.Product;
+import kr.hs.dgsw.webclass01.Domain.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

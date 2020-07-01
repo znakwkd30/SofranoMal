@@ -1,293 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#my-panel").html("aaadasdfaaa");
+            $.get("/api/user")
+                .done(function (response, status) {
+                    console.log('2');
+                    $("#my-panel").html($("#my-panel").html() + "<br>DONE<br>" + JSON.stringify(status) + "<br>" + JSON.stringify(response));
+                    if(response.length == 0) {
+                        $("#my-panel").html($("#my-panel").html() + "<br>NO DATA");
+                    }
+                    for(i = 0; i < response.length; i++) {
+                        $("#my-panel").html($("#my-panel").html() + "<br>" + response[i].id + response[i].account + response[i].username + response[i].tel + response[i].phone + response[i].address + response[i].email + "<br>");
+                    }
+                }).fail(function (response, status) {
+                console.log('3');
+                $("#my-panel").html($("#my-panel").html() + "<br>ERROR<br>" + JSON.stringify(status) + "<br>" + JSON.stringify(response));
+            }).always(function (response, status) {
+                console.log('4');
+                $("#my-panel").html($("#my-panel").html() + "<br>COMPLETE<br>" + JSON.stringify(status) + "<br>" + JSON.stringify(response));
+            });
+        });
+    </script>
 </head>
-<script>
-    $(document).ready(() => {
-        $.ajax({
-            url: "user/read",
-            success: res => {
-                var listDiv = $(".userList");
-                console.log(res);
-                res.data.forEach(item => {
-                    var div = `
-                        <div id="user${item.id}">
-                            <span onclick="readUserPost(${item.id})">${item.name}</span>
-                            <span>${item.account}</span>
-                            <span>${item.email}</span>
-                            <span>${item.phone}</span>
-                            <button onclick="visibleUpdateUserDiv(${item.id})">수정</button>
-                            <button onclick="deleteUser(${item.id})">삭제</button>
-                            <br />
-                        </div>
-                    `;
 
-                    listDiv.append(div);
-                })
-            }
-        })
-
-        $.ajax({
-            url: "post/read",
-            success: res => {
-                var listDiv = $(".postList");
-                res.data.forEach(item => {
-                    let div = `
-                        <div id="post${item.id}">
-                            <span onclick="readOnePost(${item.id})">${item.title}</span>
-                            <span>${item.content}</span>
-                            <button onclick="visibleUpdatePostDiv(${item.id})">수정</button>
-                            <button onclick="deletePost(${item.id})">삭제</button>
-                            <br />
-                        </div>
-                    `;
-
-                    listDiv.append(div);
-                })
-            }
-        })
-    })
-</script>
-<script>
-    const readOnePost = (id) => {
-        $.ajax({
-            url: `post/read/${id}`,
-            type: "get",
-            contentType: "application/json",
-            success: res => {
-                alert("조회 완료");
-                var postDiv = $(`#post${id}`);
-                let div = `
-                    <div>
-                        <span>제목 ${res.data.title}</span>
-                        <span>내용 ${res.data.content}</span>
-                        <span>생성일 ${res.data.created}</span>
-                        <span>작성자 ${res.data.userId}</span>
-                    </div>
-                `;
-
-                postDiv.append(div);
-            }
-        })
-    };
-
-    const readUserPost = (id) => {
-        $.ajax({
-            url: `post/read/user/${id}`,
-            type: "get",
-            contentType: "application/json",
-            success: res => {
-                if(res.data === null) {
-                    alert("작성 글이 없습니다.");
-                    return;
-                }
-                alert("최근 유저글 조회 완료");
-                var postDiv = $(`#user${id}`);
-                let div = `
-                    <div>
-                        <span>제목 ${res.data.title}</span>
-                        <span>내용 ${res.data.content}</span>
-                        <span>생성일 ${res.data.created}</span>
-                    </div>
-                `;
-
-                postDiv.append(div);
-            },
-            error: (request, status, err) => {
-                console.log(err);
-                alert("작성 글이 없습니다.");
-            }
-        })
-    };
-
-    const addUser = () => {
-        account = $("input[name=account]").val();
-        uname = $("input[name=uname]").val();
-        email = $("input[name=email]").val();
-        phone = $("input[name=phone]").val();
-        password = $("input[name=password]").val();
-        if(account === "") { alert("계정을 입력해주세요"); }
-        else if(uname === "") { alert("이름을 입력해주세요"); }
-        else if(password === ""){ alert("비밀번호를 입력해주세요"); }
-        else if(email === ""){ alert("이메일을 입력해주세요"); }
-        else if(phone === ""){ alert("폰번호를 입력해주세요"); }
-        $.ajax({
-            url: "user/create",
-            type: "post",
-            contentType: "application/json",
-            data: JSON.stringify({ "account": account, "name": uname, "password": password, "phone": phone, "email": email }),
-            success: res => {
-                alert("회원가입 성공!");
-                window.sessionStorage.setItem("id", res.data.id);
-                window.location.href = "/";
-            },
-            error: (request, status, err) => {
-                console.error(err);
-                alert("에러~^&^");
-            }
-        })
-    };
-
-    const deleteUser = (id) => {
-        const uid = window.sessionStorage.getItem("id");
-        if(uid === undefined) { alert("세션이 비어있음."); return; }
-        if(!(uid === id.toString())) { alert("해당유저가 아님"); return; }
-
-        $.ajax({
-            url: `user/delete/${uid}`,
-            type: "delete",
-            contentType: "application/json",
-            success: () => {
-                alert("회원탈퇴 완료");
-                window.sessionStorage.clear();
-                window.location.href = "/";
-            }
-        })
-    };
-
-    const visibleUpdateUserDiv = (id) => {
-        const idByDiv = $(`#user${id}`);
-
-        let div = `
-            <div>
-                <input name="uaccount"/>
-                <input name="uuname"/>
-                <input name="uemail"/>
-                <input name="uphone"/>
-                <input name="upassword" type="password"/>
-                <button onclick="updateUser(${id})">수정</button>
-            </div>
-        `;
-
-        idByDiv.append(div);
-    };
-
-    const updateUser = (id) => {
-        uaccount = $("input[name=uaccount]").val();
-        uuname = $("input[name=uuname]").val();
-        uemail = $("input[name=uemail]").val();
-        uphone = $("input[name=uphone]").val();
-        upassword = $("input[name=upassword]").val();
-        $.ajax({
-            url: `user/update/${id}`,
-            type: "put",
-            contentType: "application/json",
-            data: JSON.stringify({ "account": uaccount, "name": uuname, "password": upassword, "phone": uphone, "email": uemail }),
-            success: res => {
-                alert("유저업데이트 성공!");
-                window.location.href = "/";
-            },
-            error: (request, status, err) => {
-                console.error(err);
-                alert("에러~^&^");
-            }
-        })
-    };
-
-    const addPost = () => {
-        const uid = window.sessionStorage.getItem("id");
-        if(uid === undefined) { alert("세션이 비어있음."); return; }
-
-        title = $("input[name=title]").val();
-        content = $("input[name=content]").val();
-
-        $.ajax({
-            url: "post/create",
-            contentType: "application/json",
-            type: "post",
-            data: JSON.stringify({ "title": title, "content": content, "userId": uid }),
-            success: () => {
-                alert("게시글 작성");
-                window.location.href = "/";
-            },
-            error: (request, status, err) => {
-                console.log(err);
-                alert("작성중 에러");
-            }
-        })
-    };
-
-    const deletePost = (id) => {
-        if(id === null) { alert("존재하지않는 게시물"); }
-
-        $.ajax({
-            url: `post/delete/${id}`,
-            type: "delete",
-            contentType: "application/json",
-            success: () => {
-                alert("게시글 삭제");
-                window.location.href = "/"
-            }
-        })
-    };
-
-    const visibleUpdatePostDiv = (id) => {
-        const idByDiv = $(`#post${id}`);
-
-        let div = `
-            <div>
-                <input name="utitle"/>
-                <input name="ucontent"/>
-                <button onclick="updatePost(${id})">수정</button>
-            </div>
-        `;
-
-        idByDiv.append(div);
-    };
-
-
-    const updatePost = (id) => {
-        const uid = window.sessionStorage.getItem("id");
-        if(uid === undefined) { alert("세션이 비어있음."); return; }
-
-        title = $("input[name=utitle]").val();
-        content = $("input[name=ucontent]").val();
-
-        $.ajax({
-            url: `post/update/${id}`,
-            contentType: "application/json",
-            type: "put",
-            data: JSON.stringify({ "title": title, "content": content, "userId": uid }),
-            success: () => {
-                alert("게시글 수정");
-                window.location.href = "/";
-            }
-        })
-    };
-</script>
 <body>
-    <div>
-        <h1>회원가입</h1>
-        Account <input name="account"/>
-        <br />
-        Name <input name="uname"/>
-        <br />
-        Email <input name="email"/>
-        <br />
-        Phone <input name="phone"/>
-        <br />
-        Password <input name="password" type="password"/>
-        <br />
-        <button onclick="addUser()">확인</button>
-    </div>
-    <div>
-        <h1>회원목록</h1>
-        <div class="userList"></div>
-    </div>
-    <div>
-        <h1>글 쓰기</h1>
-        제목 <input name="title"/>
-        <br />
-        내용 <input name="content"/>
-        <button onclick="addPost()">확인</button>
-    </div>
-    <div>
-        <h1>글 목록</h1>
-        <div class="postList"></div>
-    </div>
+<div id="my-panel"></div>
 </body>
+
 </html>
