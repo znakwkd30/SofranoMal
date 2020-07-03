@@ -35,7 +35,7 @@
         where account=#{account}
     </select>
 
-    <select id="login" parameterType="com.example.webshop.User" resultType="kr.hs.dgsw.webclass01.Domain.User">
+    <select id="login" parameterType="kr.hs.dgsw.webclass01.Domain.User" resultType="kr.hs.dgsw.webclass01.Domain.User">
         select id, account, username, password, tel, phone, zipcode, address, email
         from user
         where account=#{account} and password=#{password}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.hs.dgsw.webclass01.CartMapper">
+<mapper namespace="kr.hs.dgsw.webclass01.Domain.CartMapper">
 
     <insert id="add" parameterType="kr.hs.dgsw.webclass01.Domain.Cart">
         insert into cart(user_id, product_id, price, amount, total, created)
