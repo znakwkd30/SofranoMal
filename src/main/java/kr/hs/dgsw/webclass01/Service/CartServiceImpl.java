@@ -29,8 +29,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart findById(Long id) {
-        return cartMapper.findById(id);
+    public Cart findById(Long userId, Long productId) {
+        return cartMapper.findById(userId, productId);
     }
 
     @Override

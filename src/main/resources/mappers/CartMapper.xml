@@ -18,9 +18,9 @@
     </delete>
 
     <select id="findById" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Cart">
-        select id, userId, productid, price, amount, total, created
+        select id, userId, productid, price, amount, total
         from cart
-        where id=#{id}
+        where productid=#{productId} and userid=#{userId}
     </select>
 
     <select id="findByUserId" parameterType="Long" resultType="HashMap">

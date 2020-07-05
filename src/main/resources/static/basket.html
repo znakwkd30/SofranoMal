@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nintendo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+</head>
+<script>
+    const loadData = () => {
+        const account = window.sessionStorage.getItem("account");
+
+        if(account === "") {
+            location.href = "index.html"
+        }
+
+        $.ajax({
+            url: `api/user/account/${account}`,
+            contentType: "application/json",
+            success: (data) => {
+                $('#h2User').text(`${data.userName}님 장바구니`);
+            }
+        });
+
+        $.ajax({
+            url: `api/cart/user/${account}`,
+            contentType: "application/json",
+            success: (data) => {
+                if(data.length === 0) {
+                    $('#productDiv').text("장바구니에 상품이 없습니다.");
+                } else {
+                    data.forEach(item => {
+                        let pDiv = $("#productDiv");
+                        let div = `
+                            <div class="uk-width-1-3">
+                                <div class="uk-card uk-card-default">
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>상품명: ${item.name}</div>
+                                    </div>
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>개수: ${item.amount} | 합계: ${item.total}원</div>
+                                    </div>
+                                    <div class="uk-card-footer">
+                                        <a href="detail.html?id=${item.productid}" class="uk-button uk-button-text uk-margin-large-right">상품 상세정보 보기<span uk-icon="arrow-right"></span></a>
+                                    </div>
+                                    <div class="uk-card-footer">
+                                        <input style="width: 140px" onclick="deleteBasket(${item.id})" class="uk-button uk-button-default" value="삭제">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        pDiv.append(div);
+                    })
+                }
+            }
+        })
+    };
+
+    const deleteBasket = (id) => {
+        $.ajax({
+            url: `api/cart/${id}`,
+            contentType: "application/json",
+            type: "delete",
+            success: () => {
+                alert("장바구니 목록에서 삭제했습니다.");
+                location.href = "basket.html"
+            }
+        })
+    };
+
+    const deleteAll = () => {
+        const account = window.sessionStorage.getItem("account");
+
+        $.ajax({
+            url: `api/cart/user/${account}`,
+            contentType: "application/json",
+            type: "delete",
+            success: () => {
+                alert("장바구니에 있는 모든 상품이 삭제되었습니다.");
+                location.href = "basket.html"
+            }
+        });
+    }
+</script>
+<body onload="loadData()">
+<div class="uk-container uk-container-expand uk-margin-top uk-animation-fade">
+    <div id="head" class="uk-section uk-section-default uk-padding">
+        <div  class="uk-flex-first uk-margin">
+            <div class="uk-position-top-left">
+                <img src="img/logo_on.png" width="300" height="300" uk-svg>
+                <a href = "main.html" class="uk-margin-left">홈</a>
+                <a href = "sub1.html" class="uk-margin-left">닌텐도</a>
+                <a href = "sub2.html" class="uk-margin-left">닌텐도 칩</a>
+                <a href = "basket.html" class="uk-margin-left">장바구니</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="uk-position-top-right uk-padding">
+            <input style="width: 140px" onclick="deleteAll()" class="uk-button uk-button-default" value="모두삭제">
+        </div>
+    </div>
+    <div id="titlemargin"></div>
+    <h2 class="uk-margin-bottom fonted" id="h2User"></h2>
+    <hr />
+    <div class="uk-card uk-card-default uk-card-body uk-card-hover uk-margin-top">
+        <div uk-sticky="animation: uk-animation-slide-top; sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; cls-inactive: uk-navbar-transparent uk-dark; top: 200">
+            <nav class="uk-background-default uk-navbar-container uk-margin" uk-navbar>
+                <div class="uk-navbar-left">
+                    <h3 class="fonted">장바구니에 담긴 물품</h3>
+                </div>z
+            </nav>
+        </div>
+        <div id="productDiv" class="uk-grid-medium uk-flex-wrap uk-flex-wrap-around uk-child-width-1-3" uk-grid>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -23,14 +23,14 @@ public class CartController {
         return cartService.deleteById(id);
     }
 
-    @DeleteMapping(value="/api/cart/userId")
-    public int deleteByUserId(@Param("userId") Long userId) {
+    @DeleteMapping(value="/api/cart/user/{userId}")
+    public int deleteByUserId(@PathVariable("userId") Long userId) {
         return cartService.deleteByUserId(userId);
     }
 
-    @GetMapping(value="/api/cart/id")
-    public Cart findById(@Param("id") Long id) {
-        return cartService.findById(id);
+    @GetMapping(value="/api/cart/{userId}/{productId}")
+    public Cart findById(@PathVariable("userId") Long userId, @PathVariable("productId") Long productId) {
+        return cartService.findById(userId, productId);
     }
 
     @GetMapping(value="/api/cart/user/{userId}")

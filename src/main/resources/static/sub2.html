@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nintendo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+</head>
+<script>
+    const loadData = () => {
+        $.ajax({
+            url: 'api/product/menu/2',
+            contentType: "application/json",
+            success: (data) => {
+                if(data.length === 0) {
+                    $('#productDiv').text("판매중인 상품이 없습니다.");
+                } else {
+                    data.forEach(item => {
+                        let pDiv = $("#productDiv");
+                        let div = `
+                            <div class="uk-width-1-3">
+                                <div class="uk-card uk-card-default">
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>상품명: ${item.name}</div>
+                                    </div>
+                                    <div class="uk-card-header">
+                                        <div class="uk-grid-small uk-flex-middle" uk-grid>${item.price}원</div>
+                                    </div>
+                                    <div class="uk-card-footer">
+                                        <a href="detail.html?id=${item.id}" class="uk-button uk-button-text">상품 상세정보 보기<span uk-icon="arrow-right"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        pDiv.append(div);
+                    })
+                }
+            }
+        })
+    };
+</script>
+<body onload="loadData()">
+<div class="uk-container uk-container-expand uk-margin-top uk-animation-fade">
+    <div id="head" class="uk-section uk-section-default uk-padding">
+        <div  class="uk-flex-first uk-margin">
+            <div class="uk-position-top-left">
+                <img src="img/logo_on.png" width="300" height="300" uk-svg>
+                <a href = "main.html" class="uk-margin-left">홈</a>
+                <a href = "sub1.html" class="uk-margin-left">닌텐도</a>
+                <a href = "sub2.html" class="uk-margin-left">닌텐도 칩</a>
+                <a href = "basket.html" class="uk-margin-left">장바구니</a>
+            </div>
+        </div>
+    </div>
+    <div class="uk-card uk-card-default uk-card-body uk-card-hover uk-margin-top">
+        <div uk-sticky="animation: uk-animation-slide-top; sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; cls-inactive: uk-navbar-transparent uk-dark; top: 200">
+            <nav class="uk-background-default uk-navbar-container uk-margin" uk-navbar>
+                <div class="uk-navbar-left">
+                    <h3 class="fonted">닌텐도 칩</h3>
+                </div>
+            </nav>
+        </div>
+        <div id="productDiv" class="uk-grid-medium uk-flex-wrap uk-flex-wrap-around uk-child-width-1-3" uk-grid>
+        </div>
+    </div>
+</div>
+</body>
+</html>

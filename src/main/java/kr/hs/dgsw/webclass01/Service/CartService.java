@@ -8,7 +8,7 @@ public interface CartService {
     Long add(Cart cart);
     int deleteById(Long id);
     int deleteByUserId(Long userId);
-    Cart findById(Long id);
+    Cart findById(Long userId, Long productId);
     List<Cart> findByUserId(Long userId);
     void modify(Cart cart);
 }
