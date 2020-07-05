@@ -4,8 +4,8 @@
 <mapper namespace="kr.hs.dgsw.webclass01.Domain.ReviewMapper">
 
     <insert id="add" parameterType="kr.hs.dgsw.webclass01.Domain.Review">
-        insert into review(product_id, user_id, content, created, modified)
-        values(#{productId}, #{userId}, #{content}, #{created}, #{modified}})
+        insert into review(userid, productid, content)
+        values(#{userId}, #{productId}, #{content})
     </insert>
 
     <update id="modify" parameterType="kr.hs.dgsw.webclass01.Domain.Review">
@@ -21,8 +21,6 @@
     </delete>
 
     <select id="findByProductId" parameterType="Long" resultType="HashMap">
-        select r.id, r.productid as productId, r.userid as userId, u.account, r.content, r.created
-        from review r left join user u on r.userid = u.id
-        where product_id=#{productId}
+        select * from review where productid=#{productId}
     </select>
 </mapper>

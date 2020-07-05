@@ -19,25 +19,23 @@
     </delete>
 
     <select id="findById" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Product">
-        select id, name, price, menuId, submenuId, details, factory
-        from product
-        where id=#{id}
+        select * from product where id=#{id}
     </select>
 
     <select id="findByMenuId" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Product">
-        select id, name, price, menuId, submenuId, details, factory
+        select id, name, price, menuId, submenuId, details, factory, image
         from product
         where menuid=#{menuid}
     </select>
 
     <select id="findBySubMenuId" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Product">
-        select id, name, price, menuId, submenuId, details, factory
+        select id, name, price, menuId, submenuId, details, factory, image
         from product
         where submenuId=#{submenuId}
     </select>
 
     <select id="findAll" resultType="kr.hs.dgsw.webclass01.Domain.Product">
-        select id, name, price, menuId, submenuId, details, factory
+        select id, name, price, menuId, submenuId, details, factory, image
         from product
     </select>
 </mapper>

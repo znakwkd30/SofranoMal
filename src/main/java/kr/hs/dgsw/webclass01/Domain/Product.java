@@ -14,4 +14,5 @@ public class Product {
     private String details;
     private String factory;
     private Long eventid;
+    private String image;
 }

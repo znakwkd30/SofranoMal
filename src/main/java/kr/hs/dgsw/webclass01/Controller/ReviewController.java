@@ -23,8 +23,8 @@ public class ReviewController {
         return reviewService.deleteById(id);
     }
 
-    @GetMapping(value = "/api/review/productId")
-    public List<Review> findByProductId(@Param("productId") Long productId) {
+    @GetMapping(value = "/api/review/{productId}")
+    public List<Review> findByProductId(@PathVariable("productId") Long productId) {
         return reviewService.findByProductId(productId);
     }
 

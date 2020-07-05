@@ -14,19 +14,24 @@
             alert("아이디를 입력해주세요.");
             return false;
         }
-        if(document.joinForm.password.value == ""){
+        else if(document.joinForm.password.value == ""){
             alert("비밀번호를 입력해주세요.");
             return false;
         }
-        if(document.joinForm.name.value == ""){
+        else if(document.joinForm.name.value == ""){
             alert("이름을 입력해주세요.")
             return false;
         }
-        if(document.joinForm.email.value == ""){
+        else if(document.joinForm.email.value == ""){
             alert("이메일을 입력해주세요.");
             return false;
         }
-        register();
+        else if(document.joinForm.password.value !== document.joinForm.checkpassword.value) {
+            alert("비밀번호를 확인해주세요");
+            location.href = "register.html"
+        } else {
+            register();
+        }
     };
 
     const register = () => {
@@ -34,12 +39,14 @@
         const password = document.joinForm.password.value;
         const name = document.joinForm.name.value;
         const email = document.joinForm.email.value;
+        const address = document.joinForm.address.value;
+        const phone = document.joinForm.phone.value;
 
         $.ajax({
             url: "api/user",
             contentType: "application/json",
             type: "post",
-            data: JSON.stringify({ "account": account, "password": password, "userName": name, "email": email }),
+            data: JSON.stringify({ "account": account, "password": password, "userName": name, "email": email, "address": address, "phone": phone }),
             success: () => {
                 alert("회원가입에 성공했습니다.");
                 window.location.href = "/";
@@ -55,7 +62,7 @@
                 <div class="uk-width-1-1@m">
                     <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
                         <img src="img/logo_on.png" width="300" height="300" class="uk-margin-medium-left" uk-svg>
-                        <form action="join" method="post" name="joinForm">
+                        <form name="joinForm">
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -66,6 +73,12 @@
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
                                     <input class="uk-input uk-form-large" type="password" name="password" id="password" placeholder="PW">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input uk-form-large" type="password" name="checkpassword" id="checkpassword" placeholder="CHECK PW">
                                 </div>
                             </div>
                             <div class="uk-margin">
@@ -82,7 +95,19 @@
                             </div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
-                                    <input class="uk-button uk-button-primary uk-button-large uk-width-1-1" type="submit" value="회원가입" onClick="check()">
+                                    <span class="uk-form-icon" uk-icon="icon: receiver"></span>
+                                    <input class="uk-input uk-form-large" type="text" name="phone" id="phone" placeholder="PHONE">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: location"></span>
+                                    <input class="uk-input uk-form-large" type="text" name="address" id="address" placeholder="ADDRESS">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <input class="uk-button uk-button-primary uk-button-large uk-width-1-1" value="회원가입" onClick="check()">
                                 </div>
                             </div>
                         </form>

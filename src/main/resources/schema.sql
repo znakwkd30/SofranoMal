@@ -10,7 +10,7 @@ create table user(
                      zip_code varchar(20),
                      address varchar(100),
                      email varchar(20) not null unique,
-                     created datetime default current_timestamp,
+                     createdAt datetime default current_timestamp,
                      modified datetime default current_timestamp on update current_timestamp
 );
 
@@ -18,8 +18,8 @@ create table product(
                         id bigint primary key auto_increment,
                         name varchar(50),
                         price int,
-                        menu_id bigint,
-                        FOREIGN KEY (menu_id) REFERENCES menu(id),
+                        menuid bigint,
+                        FOREIGN KEY (menuid) REFERENCES menu(id),
                         sub_menu_id bigint,
                         detail varchar(1000),
                         image varchar(100),
@@ -28,12 +28,22 @@ create table product(
 
 create table cart(
                      id bigint primary key auto_increment,
-                     user_id bigint,
-                     FOREIGN KEY (user_id) REFERENCES user(id),
-                     product_id bigint,
-                     FOREIGN KEY (product_id) REFERENCES product(id),
+                     userid bigint,
+                     FOREIGN KEY (userid) REFERENCES user(id),
+                     productid bigint,
+                     FOREIGN KEY (productid) REFERENCES product(id),
                      price int,
                      amount int,
                      total int,
                      created datetime default current_timestamp
 );
+
+create table review(
+                       id bigint primary key auto_increment,
+                       productid bigint,
+                       FOREIGN KEY (productid) REFERENCES product(id),
+                       userid bigint,
+                       FOREIGN KEY (userid) REFERENCES user(id),
+                       content varchar(1000),
+                       createdAt datetime default current_timestamp
+)
