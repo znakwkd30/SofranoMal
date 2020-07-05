@@ -29,7 +29,7 @@
         where id=#{id}
     </select>
 
-    <select id="findByAccount" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.User">
+    <select id="findByAccount" parameterType="String" resultType="kr.hs.dgsw.webclass01.Domain.User">
         select id, account, username, password, tel, phone, zipcode, address, email
         from user
         where account=#{account}

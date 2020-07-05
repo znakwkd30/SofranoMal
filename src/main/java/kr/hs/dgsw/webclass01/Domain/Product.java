@@ -11,7 +11,7 @@ public class Product {
     private int price;
     private Long menuid;
     private Long submenuid;
-    private Long details;
+    private String details;
     private String factory;
     private Long eventid;
 }

@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByMenuId(Long menuId) {
-        return productMapper.findByMenuId(menuId);
+    public List<Product> findByMenuId(Long menuid) {
+        return productMapper.findByMenuId(menuid);
     }
 
     @Override

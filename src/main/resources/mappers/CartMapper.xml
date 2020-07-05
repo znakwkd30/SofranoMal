@@ -4,11 +4,7 @@
 <mapper namespace="kr.hs.dgsw.webclass01.Domain.CartMapper">
 
     <insert id="add" parameterType="kr.hs.dgsw.webclass01.Domain.Cart">
-        insert into cart(user_id, product_id, price, amount, total, created)
-        values(#{userId}, #{productId}, #{price}, #{amount}, #{total}, #{created})
-<!--        <selectBy keyProperty="id" resultType="Long">-->
-<!--            select last_insert_id()-->
-<!--        </selectBy>-->
+        insert into cart(userId, productId, price, amount, total) values (#{userId}, #{productId}, #{price}, #{amount}, #{total})
     </insert>
 
     <delete id="deleteById" parameterType="Long">
@@ -18,19 +14,20 @@
 
     <delete id="deleteByUserId" parameterType="Long">
         delete from cart
-        where user_id=#{userId}
+        where userid=#{userId}
     </delete>
 
     <select id="findById" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Cart">
-        select id, userId, product_id, price, amount, total, created
+        select id, userId, productid, price, amount, total, created
         from cart
         where id=#{id}
     </select>
 
     <select id="findByUserId" parameterType="Long" resultType="HashMap">
-        select id, c.user_id as userID, product_id as productId, p.name as productName, c.price, c.amount, c.total, c.created
-        join product p on c.product_id = p.id
-        from cart
-        where user_id=#{userId}
+        select * from cart join product p on cart.productId = p.id  where userid=#{userId} order by createdAt desc
     </select>
+
+    <update id="modify" parameterType="kr.hs.dgsw.webclass01.Domain.Cart">
+        update cart set amount=#{amount}, total=#{total} where userid=#{userId} and productid=#{productId}
+    </update>
 </mapper>

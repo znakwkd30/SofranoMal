@@ -4,10 +4,7 @@ import kr.hs.dgsw.webclass01.Domain.Cart;
 import kr.hs.dgsw.webclass01.Service.CartService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,12 +14,12 @@ public class CartController {
     CartService cartService;
 
     @PostMapping(value="/api/cart")
-    public Long add(Cart cart) {
+    public Long add(@RequestBody Cart cart) {
         return cartService.add(cart);
     }
 
-    @DeleteMapping(value="/api/cart")
-    public int deleteById(@Param("id") Long id) {
+    @DeleteMapping(value="/api/cart/{id}")
+    public int deleteById(@PathVariable("id") Long id) {
         return cartService.deleteById(id);
     }
 
@@ -36,8 +33,11 @@ public class CartController {
         return cartService.findById(id);
     }
 
-    @GetMapping(value="/api/cart/userId")
-    public List<Cart> findByUserId(@Param("userId") Long userId) {
+    @GetMapping(value="/api/cart/user/{userId}")
+    public List<Cart> findByUserId(@PathVariable("userId") Long userId) {
         return cartService.findByUserId(userId);
     }
+
+    @PutMapping(value="/api/cart")
+    public void modify(@RequestBody Cart cart) { cartService.modify(cart); }
 }

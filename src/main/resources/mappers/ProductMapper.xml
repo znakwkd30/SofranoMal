@@ -27,7 +27,7 @@
     <select id="findByMenuId" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Product">
         select id, name, price, menuId, submenuId, details, factory
         from product
-        where menuId=#{menuId}
+        where menuid=#{menuid}
     </select>
 
     <select id="findBySubMenuId" parameterType="Long" resultType="kr.hs.dgsw.webclass01.Domain.Product">

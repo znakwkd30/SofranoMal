@@ -5,9 +5,12 @@ import kr.hs.dgsw.webclass01.Service.ProductService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RestController
 public class ProductController {
     @Autowired
     ProductService productService;
@@ -17,13 +20,14 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @GetMapping(value="/api/product/id")
-    public Product findById(@Param("id") Long id) {
+    @GetMapping(value="/api/product/{id}")
+    public Product findById(@PathVariable("id") Long id) {
         return productService.findById(id);
     }
 
-    @GetMapping(value="/api/product/menuId")
-    public List<Product> findByMenuId(@Param("menuId") Long menuId) {
-        return productService.findByMenuId(menuId);
+    @GetMapping(value="/api/product/menu/{id}")
+    public List<Product> findByMenuId(@PathVariable("id") Long id) {
+        System.out.println(id);
+        return productService.findByMenuId(id);
     }
 }

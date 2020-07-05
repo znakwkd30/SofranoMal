@@ -18,8 +18,8 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping("/api/user/account")
-    public User findByAccount(@Param("account") String account) {
+    @GetMapping("/api/user/account/{account}")
+    public User findByAccount(@PathVariable("account") String account) {
         return userService.findByAccount(account);
     }
 
